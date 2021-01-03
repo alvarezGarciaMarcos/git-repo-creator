@@ -1,0 +1,74 @@
+{
+  "name": "git-repo-creator",
+  "description": "A tool for creating remote gir repositories",
+  "version": "0.0.1",
+  "author": "Marcos Álvarez García",
+  "bin": {
+    "git-repo-creator": "./bin/run"
+  },
+  "bugs": "https://github.com/alvarezGarciaMarcos/git-repo-creator/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^3",
+    "@types/cli-table": "^0.3.0",
+    "@types/fs-extra": "^9.0.6",
+    "@types/shelljs": "^0.8.8",
+    "axios": "^0.21.1",
+    "cli-table": "^0.3.4",
+    "enquirer": "^2.3.6",
+    "fs-extra": "^9.0.1",
+    "path": "^0.12.7",
+    "shelljs": "^0.8.4",
+    "tslib": "^1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@types/node": "^10",
+    "eslint": "^5.13",
+    "eslint-config-oclif": "^3.1",
+    "eslint-config-oclif-typescript": "^0.1",
+    "globby": "^10",
+    "ts-node": "^8",
+    "typescript": "^3.3"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/alvarezGarciaMarcos/git-repo-creator",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "git-repo-creator",
+    "plugins": [
+      "@oclif/plugin-help"
+    ],
+    "topics": {
+      "create": {
+        "description": "Create a remote repository"
+      },
+      "config": {
+        "description": "Setup credentials for a remote repository"
+      }
+    }
+  },
+  "repository": "alvarezGarciaMarcos/git-repo-creator",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "echo NO TESTS",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts"
+}
