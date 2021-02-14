@@ -187,6 +187,6 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1
 <!-- useful-links -->
 ## Useful Links
 - [Personal Access Token (GitLab)](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
-- [Peronal Access Token (GitHub)]()
-- [Peronal Access Token (BitBucket)]()
+- [Personal Access Token (GitHub)](https://docs.github.com/es/github/authenticating-to-github/creating-a-personal-access-token)
+- [Personal Access Token (BitBucket)](https://confluence.atlassian.com/bitbucketserver/personal-access-tokens-939515499.html)
 <!-- useful-linksstop -->
