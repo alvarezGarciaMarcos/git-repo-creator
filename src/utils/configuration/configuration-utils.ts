@@ -1,11 +1,8 @@
 import * as path from 'path'
 import * as fs from 'fs-extra'
 import Command from '@oclif/command';
-import { IRepoConfig } from './IRepoConfig';
-import { IRepo } from '../../repos/i-repo';
-import { ConfigurationType } from './ConfigurationType';
-import { Github } from '../../repos/github';
-import { config } from 'process';
+import { IRepoConfig } from './config';
+import { ConfigurationType } from './config';
 
 interface AppConfiguration {
     github: IRepoConfig;
@@ -24,10 +21,10 @@ export class Configuration {
         let configuration: AppConfiguration = await this.getConfiguration(ctx)
         let newConfiguration: IRepoConfig = config
         switch(type) {
-            case ConfigurationType.GITHUB:
+            case "Github":
                 configuration.github = newConfiguration
                 break;
-            case ConfigurationType.GITLAB:
+            case "Gitlab":
                 configuration.gitlab = newConfiguration
                 break;
             default:
@@ -79,9 +76,9 @@ export class Configuration {
     static async getConfigurationByType(ctx: Command, type: ConfigurationType): Promise<IRepoConfig> {
         let configuration: AppConfiguration = await this.getConfiguration(ctx)
         switch(type) {
-            case ConfigurationType.GITHUB:
+            case "Github":
                 return configuration.github 
-            case ConfigurationType.GITLAB:
+            case "Gitlab":
                 return configuration.gitlab
             default:
                 return configuration.bitbucket 

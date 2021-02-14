@@ -1,13 +1,7 @@
-import Command from "@oclif/command";
 import axios from "axios";
-import { readlink } from "fs-extra";
-import { config } from "shelljs";
-import { ConfigurationType } from "../configuration/ConfigurationType";
-import { Configuration } from "../configuration/ConfigurationUtils";
-import { IRepoConfig } from "../configuration/IRepoConfig";
-import { IRepo, IRepoBody } from "./IRepo";
-import { RepositoryType } from "./RepositoryType";
-import { RepoResponse } from "./RepoUtils";
+import { IRepoConfig } from "../../configuration/IRepoConfig";
+import { IRepo, IRepoBody } from "../repo";
+import { RepoResponse } from "../repo";
 
 interface GitlabBodyRequest {
     name: string;
@@ -32,20 +26,20 @@ export class GitlabRepo implements IRepo {
         let res: RepoResponse = {}
         return axios.post(url, body, {headers: headers})
             .then(response => {
-                res.httpUrl = response.data["http-url"] 
-                res.sshUrl = response.data["ssh-url-to-repo"]
+                res.httpUrl = response.data["http_url_to_repo"] 
+                res.sshUrl = response.data["ssh_url_to_repo"]
                 res.token = configuration.apiKey
                 return res
 
             })
             .catch(error => {
-                res.message = this.constructMessage(error.response.data.message)
+                res.message = this._constructMessage(error.response.data.message)
                 return res
             })
 
     }
 
-    private constructMessage(message: {name: string[], path: string[]}) {
+    _constructMessage(message: {name: string[], path: string[]}) {
         return `name ${message.name[0]}; path ${message.path[0]}`;
     }
 

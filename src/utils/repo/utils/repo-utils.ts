@@ -1,42 +1,15 @@
 import Command from "@oclif/command";
-import { ConfigurationType } from "../configuration/ConfigurationType";
-import { Configuration } from "../configuration/ConfigurationUtils";
-import axios from 'axios'
-import {GitlabRepo} from './GitlabRepo'
-import {GithubRepo} from './GithubRepo'
-import { IRepo, IRepoBody } from "./IRepo";
-import {RepositoryType} from './RepositoryType'
-import Bitbucket from "../../commands/config/bitbucket";
-import { BitbucketRepo } from "./BitbucketRepo";
-import { CloneMethod } from "../../base-create";
+import { ConfigurationType } from "../../configuration/config";
+import { Configuration } from "../../configuration/configuration-utils";
+import {GitlabRepo} from '../impl/gitlab-repo'
+import {GithubRepo} from '../impl/github-repo'
+import { IRepo, IRepoBody, RepoCreationRequest, RepoResponse } from "../repo";
+import { BitbucketRepo } from "../impl/bitbucket-repo";
 
-export enum RepoErrorType {
-    NO_CONFIG="no_config",
-    CANNOT_CREATE="cannot_create"
-}
-
-export class RepoResponse {
-    message?: string;
-    httpUrl?: string;
-    sshUrl?: string;
-    repoName?: string;
-    token?: string
-
-    constructor(message?: string, httpUrl?: string, sshUrl?: string) {
-        this.message = message;
-        this.httpUrl = httpUrl;
-        this.sshUrl = sshUrl;
-    }
-}
-
-export interface RepoCreationRequest {
-    name: string;
-    isPublic: Boolean;
-    description?: string;
-}
 
 export class RepoUtils {
     static async createRepo(request: RepoCreationRequest, type: ConfigurationType, ctx: Command): Promise<RepoResponse>{
+        
         let config = await Configuration.getConfigurationByType(ctx, type)
 
         let repo = this.getRepo(type)
@@ -60,9 +33,9 @@ export class RepoUtils {
 
     static getRepo(type: ConfigurationType): IRepo {
         switch(type) {
-            case ConfigurationType.GITHUB:
+            case "Github":
                 return new GithubRepo();
-            case ConfigurationType.GITLAB:
+            case "Gitlab":
                 return new GitlabRepo();
             default:
                 return new BitbucketRepo();

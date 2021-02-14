@@ -1,5 +1,5 @@
 import {BaseHub} from "../../base-config"
-import { ConfigurationType } from "../../utils/configuration/ConfigurationType"
+import { ConfigurationType } from "../../utils/configuration/config"
 interface PromptResponse {
   apiKey: string;
   username: string;
@@ -7,7 +7,7 @@ interface PromptResponse {
 
 export default class Github extends BaseHub {
   getType(): ConfigurationType {
-    return ConfigurationType.GITHUB;
+    return "Github"
   }
 
   static description = 'Setup a github account'

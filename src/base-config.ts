@@ -1,9 +1,9 @@
 import {Command, flags} from '@oclif/command'
-import { Configuration } from './utils/configuration/ConfigurationUtils'
+import { Configuration } from './utils/configuration/configuration-utils'
+import { IRepoConfig } from './utils/configuration/config';
 import { prompt } from 'enquirer'
-import { IRepoConfig } from './utils/configuration/IRepoConfig'
 import Table from 'cli-table'
-import { ConfigurationType } from './utils/configuration/ConfigurationType'
+import { ConfigurationType } from './utils/configuration/config'
 
 interface PromptResponse {
   apiKey: string;

@@ -1,11 +1,11 @@
 import { BaseCreate } from '../../base-create'
-import { ConfigurationType } from '../../utils/configuration/ConfigurationType';
-import { RepositoryType } from '../../utils/repo/RepositoryType';
+import { ConfigurationType } from '../../utils/configuration/config';
+
 export default class Bitbucket extends BaseCreate {
     isDefaultPublic(): Boolean {
         return false;
     }
-    getType: ConfigurationType = ConfigurationType.BITBUCKET
+    getType: ConfigurationType = "Bitbucket"
 
    static description = 'Create a new Bitbucket remote repository'
 

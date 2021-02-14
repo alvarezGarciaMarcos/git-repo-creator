@@ -1,8 +1,7 @@
 import axios from "axios";
-import { IRepoConfig } from "../configuration/IRepoConfig";
-import { IRepo, IRepoBody } from "./IRepo";
-import { RepositoryType } from "./RepositoryType";
-import { RepoResponse } from "./RepoUtils";
+import { IRepoConfig } from "../../configuration/config";
+import { IRepo, IRepoBody } from "../repo";
+import { RepoResponse } from "../repo";
 
 interface BitbucketBodyRequest {
     key: string;

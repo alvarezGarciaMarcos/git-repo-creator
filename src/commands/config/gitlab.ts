@@ -1,10 +1,10 @@
 import { BaseHub } from '../../base-config'
-import { ConfigurationType } from '../../utils/configuration/ConfigurationType'
+import { ConfigurationType } from '../../utils/configuration/config'
 
 export default class Gitlab extends BaseHub {
   getType(): ConfigurationType {
-    return ConfigurationType.GITLAB
-  }
+    return  "Gitlab"
+   }
   static description = 'Setup a Gitlab account'
 
 }

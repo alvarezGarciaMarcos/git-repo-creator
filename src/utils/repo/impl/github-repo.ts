@@ -1,12 +1,7 @@
-import Command from '@oclif/command';
-import { IRepoConfig } from '../configuration/IRepoConfig';
-import {IRepo, IRepoBody} from './IRepo'
-import {Configuration} from '../configuration/ConfigurationUtils'
-import { ConfigurationType } from '../configuration/ConfigurationType';
+import { IRepoConfig } from '../../configuration/IRepoConfig';
+import {IRepo, IRepoBody} from '../repo'
 import axios from 'axios';
-import { RepositoryType } from './RepositoryType';
-import { RepoResponse } from './RepoUtils';
-import { CloneMethod } from '../../base-create';
+import { RepoResponse } from '../repo';
 
 interface GithubBodyRequest {
     name: string;
@@ -47,9 +42,4 @@ export class GithubRepo implements IRepo {
         })
 
     }
-
-    async doesExist(repoName: string) {
-        "https://api.github.com/repos/{owner}/{repo}"
-    }
-
 }
