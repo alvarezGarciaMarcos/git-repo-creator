@@ -1,7 +1,7 @@
 {
   "name": "git-repo-creator",
-  "description": "A tool for creating remote gir repositories",
-  "version": "0.0.1",
+  "description": "A tool for creating remote git repositories right from your command line",
+  "version": "1.0.0",
   "author": "Marcos Álvarez García",
   "bin": {
     "git-repo-creator": "./bin/run"
@@ -62,7 +62,10 @@
       }
     }
   },
-  "repository": "alvarezGarciaMarcos/git-repo-creator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alvarezGarciaMarcos/git-repo-creator"
+  },
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
