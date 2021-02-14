@@ -31,16 +31,16 @@ export class BitbucketRepo implements IRepo {
                 password: config.apiKey!
             }
         })
-        .then(response => {
-            res.httpUrl = response.data.links.clone[0].href
-            res.sshUrl = response.data.links.clone[1].href
-            res.token = config.apiKey
-            return res
-        })
-        .catch(error => {
-            res.message = error.response.data.error.message 
-            return res
-        })
+            .then(response => {
+                res.httpUrl = response.data.links.clone[0].href
+                res.sshUrl = response.data.links.clone[1].href
+                res.token = config.apiKey
+                return res
+            })
+            .catch(error => {
+                res.message = error.response.data.error.message
+                return res
+            })
 
     }
 

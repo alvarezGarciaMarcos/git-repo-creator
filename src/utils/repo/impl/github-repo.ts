@@ -1,5 +1,5 @@
-import { IRepoConfig } from '../../configuration/IRepoConfig';
-import {IRepo, IRepoBody} from '../repo'
+import { IRepoConfig } from '../../configuration/config';
+import { IRepo, IRepoBody } from '../repo'
 import axios from 'axios';
 import { RepoResponse } from '../repo';
 
@@ -7,7 +7,7 @@ interface GithubBodyRequest {
     name: string;
     private: Boolean;
     description?: string;
-    
+
 }
 
 export class GithubRepo implements IRepo {
@@ -30,16 +30,16 @@ export class GithubRepo implements IRepo {
                 password: apiKey!
             }
         })
-        .then(response => {
-                        res.sshUrl = response.data["ssh_url"]
-                        res.httpUrl = response.data["html_url"]
+            .then(response => {
+                res.sshUrl = response.data["ssh_url"]
+                res.httpUrl = response.data["html_url"]
                 res.token = apiKey
                 return res
-        })
-        .catch(error => {
+            })
+            .catch(error => {
                 res.message = error.response.data.errors[0].message
                 return res
-        })
+            })
 
     }
 }

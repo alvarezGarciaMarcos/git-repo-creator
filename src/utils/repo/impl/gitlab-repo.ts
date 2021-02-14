@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IRepoConfig } from "../../configuration/IRepoConfig";
+import { IRepoConfig } from "../../configuration/config";
 import { IRepo, IRepoBody } from "../repo";
 import { RepoResponse } from "../repo";
 
@@ -24,9 +24,9 @@ export class GitlabRepo implements IRepo {
         }
 
         let res: RepoResponse = {}
-        return axios.post(url, body, {headers: headers})
+        return axios.post(url, body, { headers: headers })
             .then(response => {
-                res.httpUrl = response.data["http_url_to_repo"] 
+                res.httpUrl = response.data["http_url_to_repo"]
                 res.sshUrl = response.data["ssh_url_to_repo"]
                 res.token = configuration.apiKey
                 return res
@@ -39,7 +39,7 @@ export class GitlabRepo implements IRepo {
 
     }
 
-    _constructMessage(message: {name: string[], path: string[]}) {
+    _constructMessage(message: { name: string[], path: string[] }) {
         return `name ${message.name[0]}; path ${message.path[0]}`;
     }
 

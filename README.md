@@ -7,10 +7,7 @@ With git-repo-creator you can create a remote repository directly from your term
 
 
 <!-- toc -->
-* [Installation](#installation)
-* [Commands](#commands)
-* [Flags](#flags)
-* [Useful Links](#useful-links)
+
 <!-- tocstop -->
 
 ## Installation
@@ -45,39 +42,138 @@ When this command is entered, the tool will ask you if you want to add a descrip
 
 ## Commands
 <!-- commands -->
-* [`git-repo-creator config:COMMAND`](#git-repo-creator-configcommand)
-* [`git-repo-creator create [REPONAME]`](#git-repo-creator-create-reponame)
+* [`git-repo-creator config:bitbucket`](#git-repo-creator-configbitbucket)
+* [`git-repo-creator config:github`](#git-repo-creator-configgithub)
+* [`git-repo-creator config:gitlab`](#git-repo-creator-configgitlab)
+* [`git-repo-creator create:bitbucket REPONAME`](#git-repo-creator-createbitbucket-reponame)
+* [`git-repo-creator create:github REPONAME`](#git-repo-creator-creategithub-reponame)
+* [`git-repo-creator create:gitlab REPONAME`](#git-repo-creator-creategitlab-reponame)
+* [`git-repo-creator help [COMMAND]`](#git-repo-creator-help-command)
 
-<!-- configCommand -->
-### `git-repo-creator config:COMMAND`
+## `git-repo-creator config:bitbucket`
 
-Sets up the credentials to the different git providers.
-
-```
-USAGE
-  $ git-repo-creator config:COMMAND
-
-COMMANDS
-  config:bitbucket  Setup a Bitbucket account
-  config:github     Setup a github account
-  config:gitlab     Setup a Gitlab accountt
-```
-<!-- configCommandstop -->
-
-### `git-repo-creator create [REPONAME]`
-
-Create a new remote repository
+Setup a Bitbucket account
 
 ```
 USAGE
-  $ git-repo-creator create [REPONAME]
+  $ git-repo-creator config:bitbucket
 
 OPTIONS
-  -h, --help       show CLI help
-  -n, --name=name  name of the created repo
-  --github
+  -h, --help               show CLI help
+  -k, --apiKey=apiKey
+  -u, --username=username
+  --read
+  --reset
 ```
 
+_See code: [src/commands/config/bitbucket.ts](https://github.com/alvarezGarciaMarcos/git-repo-creator/blob/v1.0.0/src/commands/config/bitbucket.ts)_
+
+## `git-repo-creator config:github`
+
+Setup a github account
+
+```
+USAGE
+  $ git-repo-creator config:github
+
+OPTIONS
+  -h, --help               show CLI help
+  -k, --apiKey=apiKey
+  -u, --username=username
+  --read
+  --reset
+```
+
+_See code: [src/commands/config/github.ts](https://github.com/alvarezGarciaMarcos/git-repo-creator/blob/v1.0.0/src/commands/config/github.ts)_
+
+## `git-repo-creator config:gitlab`
+
+Setup a Gitlab account
+
+```
+USAGE
+  $ git-repo-creator config:gitlab
+
+OPTIONS
+  -h, --help               show CLI help
+  -k, --apiKey=apiKey
+  -u, --username=username
+  --read
+  --reset
+```
+
+_See code: [src/commands/config/gitlab.ts](https://github.com/alvarezGarciaMarcos/git-repo-creator/blob/v1.0.0/src/commands/config/gitlab.ts)_
+
+## `git-repo-creator create:bitbucket REPONAME`
+
+Create a new Bitbucket remote repository
+
+```
+USAGE
+  $ git-repo-creator create:bitbucket REPONAME
+
+OPTIONS
+  -h, --help    show CLI help
+  -p, --public  Change the visibility of the repository to 'public'
+  --http        Clone using http
+  --noClone     Do not clone/add remote of the new repository
+  --ssh         Clone using ssh
+```
+
+_See code: [src/commands/create/bitbucket.ts](https://github.com/alvarezGarciaMarcos/git-repo-creator/blob/v1.0.0/src/commands/create/bitbucket.ts)_
+
+## `git-repo-creator create:github REPONAME`
+
+Create a new Github remote repository
+
+```
+USAGE
+  $ git-repo-creator create:github REPONAME
+
+OPTIONS
+  -h, --help    show CLI help
+  -p, --public  Change the visibility of the repository to 'public'
+  --http        Clone using http
+  --noClone     Do not clone/add remote of the new repository
+  --ssh         Clone using ssh
+```
+
+_See code: [src/commands/create/github.ts](https://github.com/alvarezGarciaMarcos/git-repo-creator/blob/v1.0.0/src/commands/create/github.ts)_
+
+## `git-repo-creator create:gitlab REPONAME`
+
+Create a new Gitlab remote repository
+
+```
+USAGE
+  $ git-repo-creator create:gitlab REPONAME
+
+OPTIONS
+  -h, --help    show CLI help
+  -p, --public  Change the visibility of the repository to 'public'
+  --http        Clone using http
+  --noClone     Do not clone/add remote of the new repository
+  --ssh         Clone using ssh
+```
+
+_See code: [src/commands/create/gitlab.ts](https://github.com/alvarezGarciaMarcos/git-repo-creator/blob/v1.0.0/src/commands/create/gitlab.ts)_
+
+## `git-repo-creator help [COMMAND]`
+
+display help for git-repo-creator
+
+```
+USAGE
+  $ git-repo-creator help [COMMAND]
+
+ARGUMENTS
+  COMMAND  command to show help for
+
+OPTIONS
+  --all  see all commands in CLI
+```
+
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
 <!-- commandsstop -->
 
 <!-- flags -->
