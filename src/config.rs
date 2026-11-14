@@ -152,11 +152,17 @@ mod tests {
         store
             .update(
                 Provider::Bitbucket,
-                RepoConfig { username: Some("u".into()), api_key: Some("k".into()) },
+                RepoConfig {
+                    username: Some("u".into()),
+                    api_key: Some("k".into()),
+                },
             )
             .unwrap();
         let raw = fs::read_to_string(store.path()).unwrap();
-        assert!(raw.contains(r#""bitbucket":{"apiKey":"k","username":"u"}"#), "{raw}");
+        assert!(
+            raw.contains(r#""bitbucket":{"apiKey":"k","username":"u"}"#),
+            "{raw}"
+        );
         assert!(store.load().unwrap().bitbucket.is_complete());
     }
 }

@@ -129,9 +129,18 @@ fn prompt_credentials(p: Provider, store: &Store) -> Result<()> {
         .with_prompt(format!("What is your {} username?", p.display_name()))
         .interact_text()?;
     let api_key: String = dialoguer::Password::with_theme(&theme)
-        .with_prompt(format!("What is your {} personal authorization token?", p.display_name()))
+        .with_prompt(format!(
+            "What is your {} personal authorization token?",
+            p.display_name()
+        ))
         .interact()?;
-    store.update(p, RepoConfig { username: Some(username), api_key: Some(api_key) })
+    store.update(
+        p,
+        RepoConfig {
+            username: Some(username),
+            api_key: Some(api_key),
+        },
+    )
 }
 
 fn mask(secret: &str) -> String {
@@ -182,16 +191,27 @@ fn run_create(p: Provider, a: CreateArgs) -> Result<()> {
     let created = providers::create_repo(
         p,
         &cfg,
-        &NewRepo { name: &a.repo_name, description: &description, public: a.public },
+        &NewRepo {
+            name: &a.repo_name,
+            description: &description,
+            public: a.public,
+        },
     )?;
 
     if a.no_clone {
         println!("Your repository is ready!!");
-        println!("  https: {}\n  ssh:   {}", created.https_url, created.ssh_url);
+        println!(
+            "  https: {}\n  ssh:   {}",
+            created.https_url, created.ssh_url
+        );
         return Ok(());
     }
 
-    let url = if choose_ssh(a.ssh, a.http)? { &created.ssh_url } else { &created.https_url };
+    let url = if choose_ssh(a.ssh, a.http)? {
+        &created.ssh_url
+    } else {
+        &created.https_url
+    };
 
     if Path::new(".git").exists() {
         add_remote(url)?;
