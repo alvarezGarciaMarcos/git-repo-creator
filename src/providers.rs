@@ -28,7 +28,10 @@ impl Provider {
         let (var, default) = match self {
             Provider::Github => ("GIT_REPO_CREATOR_GITHUB_API", "https://api.github.com"),
             Provider::Gitlab => ("GIT_REPO_CREATOR_GITLAB_API", "https://gitlab.com/api/v4"),
-            Provider::Bitbucket => ("GIT_REPO_CREATOR_BITBUCKET_API", "https://api.bitbucket.org/2.0"),
+            Provider::Bitbucket => (
+                "GIT_REPO_CREATOR_BITBUCKET_API",
+                "https://api.bitbucket.org/2.0",
+            ),
         };
         std::env::var(var)
             .ok()
@@ -64,7 +67,11 @@ fn basic_auth(user: &str, pass: &str) -> String {
     let input = format!("{user}:{pass}");
     let mut out = String::with_capacity(input.len().div_ceil(3) * 4);
     for chunk in input.as_bytes().chunks(3) {
-        let b = [chunk[0], *chunk.get(1).unwrap_or(&0), *chunk.get(2).unwrap_or(&0)];
+        let b = [
+            chunk[0],
+            *chunk.get(1).unwrap_or(&0),
+            *chunk.get(2).unwrap_or(&0),
+        ];
         let n = (u32::from(b[0]) << 16) | (u32::from(b[1]) << 8) | u32::from(b[2]);
         for i in 0..4 {
             if i <= chunk.len() {
@@ -96,7 +103,10 @@ pub fn create_repo(provider: Provider, cfg: &RepoConfig, repo: &NewRepo) -> Resu
             .post(&format!("{base}/projects"))
             .set("PRIVATE-TOKEN", token),
         Provider::Bitbucket => a
-            .post(&format!("{base}/repositories/{user}/{}", repo.name.to_lowercase()))
+            .post(&format!(
+                "{base}/repositories/{user}/{}",
+                repo.name.to_lowercase()
+            ))
             .set("Authorization", &basic_auth(user, token)),
     };
     let body = request_body(provider, repo);
@@ -121,7 +131,9 @@ pub fn create_repo(provider: Provider, cfg: &RepoConfig, repo: &NewRepo) -> Resu
 
 fn request_body(provider: Provider, r: &NewRepo) -> Value {
     match provider {
-        Provider::Github => json!({ "name": r.name, "private": !r.public, "description": r.description }),
+        Provider::Github => {
+            json!({ "name": r.name, "private": !r.public, "description": r.description })
+        }
         Provider::Gitlab => json!({
             "name": r.name,
             "visibility": if r.public { "public" } else { "private" },
@@ -166,9 +178,18 @@ fn error_message(provider: Provider, v: &Value) -> Option<String> {
             .map(|(k, val)| match val {
                 Value::Array(a) => format!(
                     "{k} {}",
-                    a.iter().filter_map(Value::as_str).collect::<Vec<_>>().join(", ")
+                    a.iter()
+                        .filter_map(Value::as_str)
+                        .collect::<Vec<_>>()
+                        .join(", ")
                 ),
-                other => format!("{k} {}", other.as_str().map(str::to_string).unwrap_or(other.to_string())),
+                other => format!(
+                    "{k} {}",
+                    other
+                        .as_str()
+                        .map(str::to_string)
+                        .unwrap_or(other.to_string())
+                ),
             })
             .collect::<Vec<_>>()
             .join("; ")
@@ -182,9 +203,15 @@ fn error_message(provider: Provider, v: &Value) -> Option<String> {
         Provider::Gitlab => match &v["message"] {
             Value::String(s) => Some(s.clone()),
             Value::Object(m) => Some(join(m)),
-            _ => v["error_description"].as_str().or(v["error"].as_str()).map(str::to_string),
+            _ => v["error_description"]
+                .as_str()
+                .or(v["error"].as_str())
+                .map(str::to_string),
         },
-        Provider::Bitbucket => v.pointer("/error/message").and_then(Value::as_str).map(str::to_string),
+        Provider::Bitbucket => v
+            .pointer("/error/message")
+            .and_then(Value::as_str)
+            .map(str::to_string),
     }
 }
 
@@ -194,7 +221,10 @@ mod tests {
 
     #[test]
     fn base64_matches_reference() {
-        assert_eq!(basic_auth("Aladdin", "open sesame"), "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==");
+        assert_eq!(
+            basic_auth("Aladdin", "open sesame"),
+            "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
+        );
         assert_eq!(basic_auth("a", "b"), "Basic YTpi");
         assert_eq!(basic_auth("ab", "c"), "Basic YWI6Yw==");
     }
@@ -202,19 +232,30 @@ mod tests {
     #[test]
     fn parses_error_shapes() {
         let gh = json!({"message":"Repository creation failed.","errors":[{"message":"name already exists on this account"}]});
-        assert_eq!(error_message(Provider::Github, &gh).unwrap(), "name already exists on this account");
+        assert_eq!(
+            error_message(Provider::Github, &gh).unwrap(),
+            "name already exists on this account"
+        );
         // 401 has no `errors` array — the TS version crashed with a TypeError here.
         let gh401 = json!({"message":"Bad credentials"});
-        assert_eq!(error_message(Provider::Github, &gh401).unwrap(), "Bad credentials");
+        assert_eq!(
+            error_message(Provider::Github, &gh401).unwrap(),
+            "Bad credentials"
+        );
         let gl = json!({"message":{"name":["has already been taken"],"path":["has already been taken"]}});
         assert_eq!(
             error_message(Provider::Gitlab, &gl).unwrap(),
             "name has already been taken; path has already been taken"
         );
         let gl401 = json!({"message":"401 Unauthorized"});
-        assert_eq!(error_message(Provider::Gitlab, &gl401).unwrap(), "401 Unauthorized");
+        assert_eq!(
+            error_message(Provider::Gitlab, &gl401).unwrap(),
+            "401 Unauthorized"
+        );
         let bb = json!({"type":"error","error":{"message":"Repository with this Slug and Owner already exists."}});
-        assert!(error_message(Provider::Bitbucket, &bb).unwrap().contains("already exists"));
+        assert!(error_message(Provider::Bitbucket, &bb)
+            .unwrap()
+            .contains("already exists"));
     }
 
     #[test]
